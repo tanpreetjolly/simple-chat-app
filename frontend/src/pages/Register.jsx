@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Register = () => {
   const [data, setData] = useState({
@@ -13,25 +13,20 @@ const Register = () => {
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const navigate = useNavigate();
-
-  const [error, setError] = useState("");
-  console.log(error);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const url = "http://localhost:4000/api/user/register";
       const { data: res } = await axios.post(url, data);
       console.log(res.message);
-      console.log(res)
-      navigate("/");
+      toast.success(res.message);
     } catch (error) {
       if (
         error.response &&
-        error.response.status >= 400 &&
+        error.response.status >= 300 &&
         error.response.status <= 500
       ) {
-        setError(error.response.data.message);
+        toast.error(error.response.data.message);
       }
     }
   };

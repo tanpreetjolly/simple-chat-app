@@ -1,41 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const navigate = useNavigate();
+  const authToken = Cookies.get("authToken");
 
-  const [error, setError] = useState("");
-  console.log(error);
+  useEffect(() => {
+    if (authToken) {
+      navigate("/");
+    }
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const url = "http://localhost:4000/api/user/login";
-      await axios.post(url, data);
-      const authToken = Cookies.get("authToken");
+      console.log(data);
+      const response = await axios.post(url, data, {
+        withCredentials: true, // Set withCredentials to true
+      });
 
-      if (authToken) {
-        // If the cookie exists, navigate to the desired location (e.g., '/')
+      console.log(response.message);
+      if (response.status == 200) {
+        toast.success(response.message);
         navigate("/");
-      } else {
-        // If the cookie doesn't exist, handle it accordingly
-        console.error("Auth token cookie not found");
       }
+      
     } catch (error) {
       if (
         error.response &&
         error.response.status >= 400 &&
         error.response.status <= 500
       ) {
-        setError(error.response.data.message);
+        toast.error(error.response.data.message);
       }
     }
   };
