@@ -4,6 +4,7 @@ const { User, validateLogin } = require("../models/userModel.js");
 const loginController = async (req, res) => {
   try {
     const { error } = validateLogin(req.body);
+
     if (error) {
       return res.status(400).send({ message: error.details[0].message });
     }
@@ -30,7 +31,12 @@ const loginController = async (req, res) => {
 
     // Generate authentication token and send successful login response
     const token = user.generateAuthToken();
-    res.status(200).cookie("authToken", token, { httpOnly: true });
+    // res.status(200).send({ message: "Login successful", token: token });
+    res
+      .status(200)
+      .cookie("authToken", token, { httpOnly: false })
+      .send({ message: "Login successful", status: 200 });
+    return;
   } catch (error) {
     console.error("Error in loginController:", error);
     res.status(500).send({ message: "Internal Server Error" });

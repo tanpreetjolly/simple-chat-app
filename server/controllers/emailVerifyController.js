@@ -9,6 +9,10 @@ const verifyEmail = async (req, res) => {
       return res.status(400).send({ message: "User doesn't exist" });
     }
 
+    if (user.verified) {
+      return res.status(400).send({ message: "Email already verified" });
+    }
+
     // Find the token for the user
     const token = await Token.findOne({
       userId: user._id,
@@ -29,7 +33,6 @@ const verifyEmail = async (req, res) => {
     await user.save();
 
     // Optional: Delete the verification token from the database
-    await token.remove();
 
     res.status(200).send({ message: "Email Verified Successfully" });
   } catch (error) {

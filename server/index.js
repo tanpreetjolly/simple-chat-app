@@ -4,10 +4,10 @@ const cors = require("cors");
 const app = express();
 const connection = require("./db/db.js");
 const userRoute = require("./routes/userRoute.js");
-
+const cookieParser = require('cookie-parser')
 //database connection
 connection();
-
+app.use(cookieParser())
 
 //middlewares
 app.use(express.json());
