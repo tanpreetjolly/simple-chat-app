@@ -20,11 +20,12 @@ const registerController = async (req, res) => {
         .status(409)
         .send({ message: "User with given email already exists" });
     }
-
     if (user && user.verificationLinkSent) {
       return res
-        .status(300)
-        .send({ message: "A verification link has been already sent to this Email" });
+        .status(400)
+        .send({
+          message: "A verification link has been already sent to this Email",
+        });
     }
 
     // Hash the password using bcrypt
