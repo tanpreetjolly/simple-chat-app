@@ -1,10 +1,9 @@
 const { User } = require("../models/userModel.js");
 const { Token } = require("../models/tokenModel.js");
-
 const verifyEmail = async (req, res) => {
   try {
-    // Find the user by id
     const user = await User.findById(req.params.id);
+
     if (!user) {
       return res.status(400).send({ message: "User doesn't exist" });
     }
@@ -31,8 +30,6 @@ const verifyEmail = async (req, res) => {
 
     user.verified = true;
     await user.save();
-
-    // Optional: Delete the verification token from the database
 
     res.status(200).send({ message: "Email Verified Successfully" });
   } catch (error) {

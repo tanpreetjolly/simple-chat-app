@@ -28,10 +28,8 @@ const registerController = async (req, res) => {
         });
     }
 
-    // Hash the password using bcrypt
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
-
     // Save the user with hashed password
     user = await new User({ ...req.body, password: hashPassword }).save();
 

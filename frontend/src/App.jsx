@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import VerifyEmail from "./pages/VerifyEmail";
 import { AuthProvider } from "./context/authContext";
+import axios from "axios"
 const Layout = () => {
   return (
     <>
@@ -47,6 +48,8 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  axios.defaults.baseURL = 'http://localhost:4040';
+  axios.defaults.withCredentials = true;
   return (
     <>
       <AuthProvider>
