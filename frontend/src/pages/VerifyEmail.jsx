@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom"; // Make sure to import useParams if you're using React Router
+import { Link, useParams } from "react-router-dom"; // Make sure to import useParams if you're using React Router
 import { toast } from "react-hot-toast";
 
 const VerifyEmail = () => {
   const { id, token } = useParams();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `http://localhost:4000/api/user/${id}/verify/${token}`
         );
@@ -15,16 +17,26 @@ const VerifyEmail = () => {
         toast.success(response.data.message);
         // console.log("Verification successful:", response.data);
       } catch (error) {
-        // Handle errors
+        setLoading(false);
         toast.error(error.response.data.message);
-        // console.error("Verification failed:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [id, token]); // The empty dependency array ensures that this effect runs once when the component mounts
-
-  return <div>Email Verified</div>;
+  }, [id, token]);
+  return (
+    <>
+      {loading && <h1>Loading...</h1>}
+      {!loading && (
+        <div>
+          Verification successful
+          <Link to={"/"}>Homepage</Link>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default VerifyEmail;

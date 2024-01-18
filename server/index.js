@@ -7,6 +7,7 @@ const userRoute = require("./routes/userRoute.js");
 const cookieParser = require('cookie-parser')
 //database connection
 connection();
+app.use(express.json())
 app.use(cookieParser())
 
 //middlewares

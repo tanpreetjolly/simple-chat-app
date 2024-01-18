@@ -11,6 +11,7 @@ const loginController = async (req, res) => {
 
     // Find the user by email
     const user = await User.findOne({ email: req.body.email });
+
     if (!user) {
       return res.status(401).send({ message: "Invalid Email" });
     }
@@ -31,10 +32,9 @@ const loginController = async (req, res) => {
 
     // Generate authentication token and send successful login response
     const token = user.generateAuthToken();
-    // res.status(200).send({ message: "Login successful", token: token });
     res
       .status(200)
-      .cookie("authToken", token, { httpOnly: false })
+      .cookie("authToken", token, { httpOnly: false , sameSite:'none', secure:true})
       .send({ message: "Login successful", status: 200 });
     return;
   } catch (error) {

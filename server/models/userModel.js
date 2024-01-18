@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY,  { expiresIn: '7d' });
+  const token = jwt.sign({ _id: this._id, firstName: this.firstName , lastName : this.lastName }, process.env.JWTPRIVATEKEY,  { expiresIn: '7d' });
   return token;
 };
 
@@ -39,4 +39,5 @@ const validateLogin = (data) => {
   });
   return schema.validate(data);
 };
+
 module.exports = { User, validateRegister, validateLogin };
