@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import VerifyEmail from "./pages/VerifyEmail";
 import { AuthProvider } from "./context/authContext";
 import axios from "axios"
+import ChatHome from "./pages/ChatHome";
 const Layout = () => {
   return (
     <>
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "users/:id/verify/:token",
         element: <VerifyEmail />,
+      },
+      {
+        path: "chathome",
+        element: <ChatHome />,
       },
     ],
   },
