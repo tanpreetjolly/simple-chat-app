@@ -5,6 +5,7 @@ const app = express();
 const connection = require("./db/db.js");
 const userRoute = require("./routes/userRoute.js");
 const cookieParser = require('cookie-parser')
+const createWebSocketServer = require("./wsServer.js");
 //database connection
 connection();
 app.use(express.json())
@@ -36,4 +37,6 @@ app.use("/api/user", userRoute);
 console.log(process.env.SMTP_USER);
 console.log(process.env.SMTP_PASS);
 const port = process.env.PORT || 8000;
-app.listen(port, () => console.log(`Application Running on Port ${port}`));
+const server = app.listen(port, () => console.log(`Application Running on Port ${port}`));
+
+const wss = createWebSocketServer(server); 
