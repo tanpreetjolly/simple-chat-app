@@ -18,18 +18,18 @@ const ChatHome = () => {
               class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-e-lg border"
             >
               <svg
-                class="w-6 h-6 text-gray-800 dark:text-white"
+                className="w-4 h-4 text-gray-800 dark:text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewBox="0 0 8 14"
+                viewBox="0 0 14 10"
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
                 />
               </svg>
             </button>
