@@ -39,4 +39,4 @@ console.log(process.env.SMTP_PASS);
 const port = process.env.PORT || 8000;
 const server = app.listen(port, () => console.log(`Application Running on Port ${port}`));
 
-const wss = createWebSocketServer(server); 
+createWebSocketServer(server); 

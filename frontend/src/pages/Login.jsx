@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
+import { useAuth } from "../context/authContext";
 
 const Login = () => {
   const [data, setData] = useState({
@@ -14,13 +15,13 @@ const Login = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const navigate = useNavigate();
-  const authToken = Cookies.get("authToken");
+  const { isAuthenticated, setAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (authToken) {
+    if (isAuthenticated) {
       navigate("/");
     }
-  });
+  }, [isAuthenticated]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,9 +35,8 @@ const Login = () => {
       console.log(response.message);
       if (response.status == 200) {
         toast.success(response.message);
-        navigate("/");
+        setAuthenticated(true);
       }
-      
     } catch (error) {
       if (
         error.response &&
