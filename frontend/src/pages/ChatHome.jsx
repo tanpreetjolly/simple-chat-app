@@ -1,25 +1,35 @@
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "../components/Chat/Avatar";
+import { useProfile } from "../context/profileContext";
 
 const ChatHome = () => {
-  // const [ws, setWs] = useState(null);
+  const [ws, setWs] = useState(null);
   const [onlinePeople, setOnlinePeople] = useState({});
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [messages, setMessages] = useState([]);
-
-  // console.log(onlinePeople);
+  const { userDetails } = useProfile();
+  // console.log(userDetails);
+  console.log(onlinePeople);
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
-    // setWs(ws);
     ws.addEventListener("message", handleMessage);
-  }, []);
+    setWs(ws);
+
+    // Cleanup function to close the WebSocket connection when the component unmounts
+    return () => {
+      ws.close();
+    };
+  }, [userDetails]);
 
   function showOnlinePeople(peopleArray) {
     const people = {};
     peopleArray.forEach(({ userId, username }) => {
-      people[userId] = username;
+      if (userId !== userDetails._id) {
+        people[userId] = username;
+      }
     });
+
     setOnlinePeople(people);
   }
 
@@ -34,6 +44,7 @@ const ChatHome = () => {
       }
     }
   }
+
   return (
     <div className="flex min-h-screen">
       <nav className="outline w-1/12 bg-blue-200">Nav</nav>
@@ -41,7 +52,7 @@ const ChatHome = () => {
         {Object.keys(onlinePeople).map((userId) => (
           <li
             key={userId}
-            className="p-2.5 border-b border-gray-300 hover:bg-gray-100 flex  items-center justify-center gap-2"
+            className={`${selectedUserId && "bg-teal-100"} p-2.5 border-b border-gray-300 hover:bg-gray-100 flex  items-center justify-center gap-2 hover:cursor-pointer`}
             onClick={() => {
               setSelectedUserId(userId);
             }}
