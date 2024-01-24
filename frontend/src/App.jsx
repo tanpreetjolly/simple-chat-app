@@ -13,6 +13,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import { AuthProvider } from "./context/authContext";
 import axios from "axios"
 import ChatHome from "./pages/ChatHome";
+import { ProfileProvider } from "./context/profileContext";
 const Layout = () => {
   return (
     <>
@@ -58,8 +59,10 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router} />
-        <Toaster />
+        <ProfileProvider>
+          <RouterProvider router={router} />
+          <Toaster />
+        </ProfileProvider>
       </AuthProvider>
     </>
   );

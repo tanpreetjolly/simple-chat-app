@@ -12,7 +12,7 @@ export default function Avatar({ username, userId }) {
     "bg-rose-200",
   ];
 
-  console.log(username)
+  // console.log(username)
   const userIdBase10 = parseInt(userId.substring(10), 16);
   const colorIndex = userIdBase10 % colors.length;
   const color = colors[colorIndex];

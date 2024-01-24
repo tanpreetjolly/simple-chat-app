@@ -8,6 +8,6 @@ const router = express.Router();
 router.post('/register',registerController);
 router.post('/login', loginController);
 router.get("/:id/verify/:token", verifyEmail);
-router.get("/profile/:id", profileController);
+router.get("/profile", profileController);
 
 module.exports = router;

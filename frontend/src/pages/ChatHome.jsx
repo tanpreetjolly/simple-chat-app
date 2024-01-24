@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import Avatar from "../components/Chat/Avatar";
 
 const ChatHome = () => {
-  const [ws, setWs] = useState(null);
+  // const [ws, setWs] = useState(null);
   const [onlinePeople, setOnlinePeople] = useState({});
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  console.log(onlinePeople);
+  // console.log(onlinePeople);
+
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
-    setWs(ws);
+    // setWs(ws);
     ws.addEventListener("message", handleMessage);
   }, []);
 
@@ -42,7 +43,7 @@ const ChatHome = () => {
             key={userId}
             className="p-2.5 border-b border-gray-300 hover:bg-gray-100 flex  items-center justify-center gap-2"
             onClick={() => {
-              setSelectedUserId(userId), console.log(userId);
+              setSelectedUserId(userId);
             }}
           >
             <Avatar userId={userId} username={onlinePeople[userId]} />
