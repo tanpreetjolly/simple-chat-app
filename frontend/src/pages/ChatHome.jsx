@@ -1,21 +1,55 @@
 import { useEffect, useState } from "react";
+import Avatar from "../components/Chat/Avatar";
 
 const ChatHome = () => {
   const [ws, setWs] = useState(null);
+  const [onlinePeople, setOnlinePeople] = useState({});
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [messages, setMessages] = useState([]);
 
+  console.log(onlinePeople);
   useEffect(() => {
-    const ws =  new WebSocket("ws://localhost:4000");
+    const ws = new WebSocket("ws://localhost:4000");
     setWs(ws);
-    ws.addEventListener('message', handleMessage)
+    ws.addEventListener("message", handleMessage);
   }, []);
 
-  const handleMessage = (e) => {
-    console.log('new message', e);
+  function showOnlinePeople(peopleArray) {
+    const people = {};
+    peopleArray.forEach(({ userId, username }) => {
+      people[userId] = username;
+    });
+    setOnlinePeople(people);
+  }
+
+  function handleMessage(ev) {
+    const messageData = JSON.parse(ev.data);
+    console.log({ ev, messageData });
+    if ("online" in messageData) {
+      showOnlinePeople(messageData.online);
+    } else if ("text" in messageData) {
+      if (messageData.sender === selectedUserId) {
+        setMessages((prev) => [...prev, { ...messageData }]);
+      }
+    }
   }
   return (
     <div className="flex min-h-screen">
       <nav className="outline w-1/12 bg-blue-200">Nav</nav>
-      <section className="outline w-4/12 bg-blue-200">Sidebar</section>
+      <section className="outline w-4/12 bg-blue-200">
+        {Object.keys(onlinePeople).map((userId) => (
+          <li
+            key={userId}
+            className="p-2.5 border-b border-gray-300 hover:bg-gray-100 flex  items-center justify-center gap-2"
+            onClick={() => {
+              setSelectedUserId(userId), console.log(userId);
+            }}
+          >
+            <Avatar userId={userId} username={onlinePeople[userId]} />
+            {onlinePeople[userId]}
+          </li>
+        ))}
+      </section>
       <section className="outline w-7/12 bg-blue-400 relative pb-10">
         <div className="absolute bottom-4 w-4/5 left-1/2 transform -translate-x-1/2 ">
           <div className="relative w-full">
