@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../context/authContext";
 
@@ -18,6 +17,7 @@ const Login = () => {
   const { isAuthenticated, setAuthenticated } = useAuth();
 
   useEffect(() => {
+    console.log(isAuthenticated);
     if (isAuthenticated) {
       navigate("/");
     }

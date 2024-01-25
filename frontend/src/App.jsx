@@ -10,11 +10,19 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import VerifyEmail from "./pages/VerifyEmail";
-import { AuthProvider } from "./context/authContext";
-import axios from "axios"
+import { AuthProvider, useAuth } from "./context/authContext";
+import axios from "axios";
 import ChatHome from "./pages/ChatHome";
 import { ProfileProvider } from "./context/profileContext";
+import { useEffect } from "react";
+
 const Layout = () => {
+  const { isAuthenticated, checkAuth } = useAuth();
+
+  useEffect(() => {
+    checkAuth();
+  }, [isAuthenticated]);
+
   return (
     <>
       {/* <Header /> */}
@@ -54,8 +62,9 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  axios.defaults.baseURL = 'http://localhost:4040';
+  axios.defaults.baseURL = "http://localhost:4000";
   axios.defaults.withCredentials = true;
+
   return (
     <>
       <AuthProvider>

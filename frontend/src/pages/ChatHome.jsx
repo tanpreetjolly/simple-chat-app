@@ -7,9 +7,10 @@ const ChatHome = () => {
   const [onlinePeople, setOnlinePeople] = useState({});
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
   const { userDetails } = useProfile();
   // console.log(userDetails);
-  console.log(onlinePeople);
+  // console.log(onlinePeople);
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
@@ -45,6 +46,9 @@ const ChatHome = () => {
     }
   }
 
+  const handleChange = (ev) => {
+    
+  }
   return (
     <div className="flex min-h-screen">
       <nav className="outline w-1/12 bg-blue-200">Nav</nav>

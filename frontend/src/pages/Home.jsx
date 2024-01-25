@@ -4,11 +4,8 @@ import { useAuth } from "../context/authContext";
 
 
 const Home = () => {
-  const { isAuthenticated, checkAuth } = useAuth();
-
-  useEffect(() => {
-    checkAuth();
-  }, [isAuthenticated]);
+  
+  const{isAuthenticated} = useAuth();
 
   return (
     <div className="outline outline-red-500">
