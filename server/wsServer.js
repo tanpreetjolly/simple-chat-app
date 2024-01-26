@@ -1,6 +1,7 @@
 const ws = require("ws");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const { Message } = require("./models/messageModel");
 
 const createWebSocketServer = (server) => {
   const wss = new ws.WebSocketServer({ server });
@@ -21,6 +22,30 @@ const createWebSocketServer = (server) => {
         });
       }
     }
+
+    connection.on("message", async (message) => {
+      const messageData = JSON.parse(message.toString());
+      const { receiver, text } = messageData;
+      const msgDoc = await Message.create({
+        sender: connection.userId,
+        receiver,
+        text,
+      });
+      console.log(receiver, text);
+      if (receiver && text) {
+        wss.clients.forEach((client) => {
+          if (client.userId === receiver) {
+            client.send(
+              JSON.stringify({
+                sender: connection.username,
+                text,
+                id: msgDoc._id,
+              })
+            );
+          }
+        });
+      }
+    });
 
     // Sending online user list to all clients
     wss.clients.forEach((client) => {
