@@ -1,7 +1,7 @@
 const ws = require("ws");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
-const { Message } = require("./models/messageModel");
+const Message = require("./models/messageModel");
 
 const createWebSocketServer = (server) => {
   const wss = new ws.WebSocketServer({ server });
@@ -33,7 +33,7 @@ const createWebSocketServer = (server) => {
       });
       console.log(receiver, text);
       if (receiver && text) {
-        wss.clients.forEach((client) => {
+        [...wss.clients].forEach((client) => {
           if (client.userId === receiver) {
             client.send(
               JSON.stringify({
