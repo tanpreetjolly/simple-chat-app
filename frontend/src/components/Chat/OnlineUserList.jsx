@@ -7,6 +7,7 @@ const OnlineUsersList = ({
   selectedUserId,
   setSelectedUserId,
 }) => {
+  console.log(onlinePeople)
   return (
     <section className="outline w-4/12 bg-blue-200">
       {Object.keys(onlinePeople).map((userId) => (

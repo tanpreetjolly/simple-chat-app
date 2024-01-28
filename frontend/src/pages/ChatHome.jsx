@@ -48,14 +48,14 @@ const ChatHome = () => {
     if (ev) ev.preventDefault();
     console.log("sending message");
     console.log(newMessage, selectedUserId);
-    ws.send(JSON.stringify({ text: newMessage, receiver: selectedUserId }));
+    ws.send(JSON.stringify({ text: newMessage, recipient: selectedUserId }));
     setNewMessage("");
     setMessages((prev) => [
       ...prev,
       {
         text: newMessage,
         sender: userDetails._id,
-        receiver: selectedUserId,
+        recipient: selectedUserId,
         _id: Date.now(),
       },
     ]);
@@ -67,7 +67,7 @@ const ChatHome = () => {
         try {
           const res = await axios.get(`/api/user/messages/${selectedUserId}`);
           setMessages(res.data);
-          console.log(res.data);
+          // console.log(res.data);
         } catch (error) {
           console.error("Error fetching messages:", error);
         }
@@ -76,12 +76,8 @@ const ChatHome = () => {
 
     fetchData();
   }, [selectedUserId]);
-
-  const messagesWithoutDupes = messages.filter(
-    (message, index, self) =>
-      index === self.findIndex((m) => m._id === message._id)
-  );
-
+  
+  console.log(onlinePeople);
   return (
     <div className="flex min-h-screen">
       <Nav />
@@ -92,15 +88,17 @@ const ChatHome = () => {
       />
       <section className="outline w-7/12 bg-blue-400 relative pb-10">
         <ChatMessages
-          messagesWithoutDupes={messagesWithoutDupes}
+          messages={messages}
           userDetails={userDetails}
           selectedUserId={selectedUserId}
         />
-        <MessageInputForm
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          sendMessage={sendMessage}
-        />
+        <div className="absolute w-full bottom-0 outline flex justify-center items-center">
+          <MessageInputForm
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            sendMessage={sendMessage}
+          />
+        </div>
       </section>
     </div>
   );

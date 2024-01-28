@@ -5,8 +5,10 @@ const Message = require("./models/messageModel");
 
 const createWebSocketServer = (server) => {
   const wss = new ws.WebSocketServer({ server });
+
   wss.on("connection", (connection, req) => {
     const cookies = req.headers.cookie;
+
     if (cookies) {
       const tokenString = cookies
         .split(";")
@@ -16,25 +18,29 @@ const createWebSocketServer = (server) => {
         const token = tokenString.split("=")[1];
         jwt.verify(token, process.env.JWTPRIVATEKEY, {}, (err, userData) => {
           if (err) console.log(err);
+
           const { _id, firstName, lastName } = userData;
           connection.userId = _id;
           connection.username = `${firstName} ${lastName}`;
+
+          // Log authenticated user information
+          console.log("User Connected:", connection.userId, connection.username);
         });
       }
     }
 
     connection.on("message", async (message) => {
       const messageData = JSON.parse(message.toString());
-      const { receiver, text } = messageData;
+      const { recipient, text } = messageData;
       const msgDoc = await Message.create({
         sender: connection.userId,
-        receiver,
+        recipient,
         text,
       });
-      console.log(receiver, text);
-      if (receiver && text) {
+
+      if (recipient && text) {
         [...wss.clients].forEach((client) => {
-          if (client.userId === receiver) {
+          if (client.userId === recipient) {
             client.send(
               JSON.stringify({
                 sender: connection.username,
@@ -48,16 +54,21 @@ const createWebSocketServer = (server) => {
     });
 
     // Sending online user list to all clients
-    wss.clients.forEach((client) => {
+    const onlineUsers = Array.from(wss.clients).map((client) => ({
+      userId: client.userId,
+      username: client.username,
+    }));
+
+    [...wss.clients].forEach((client) => {
       client.send(
         JSON.stringify({
-          online: Array.from(wss.clients).map((client) => ({
-            userId: client.userId,
-            username: client.username,
-          })),
+          online: onlineUsers,
         })
       );
     });
+
+    // Log online users to the console
+    // console.log("Online Users:", onlineUsers);
   });
 };
 
