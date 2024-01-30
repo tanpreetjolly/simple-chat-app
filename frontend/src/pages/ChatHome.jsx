@@ -19,9 +19,51 @@ const ChatHome = () => {
     const ws = new WebSocket("ws://localhost:4000");
     ws.addEventListener("message", handleMessage);
     setWs(ws);
+
+    return () => {
+      // Close the WebSocket connection when component unmounts
+      ws.close();
+    };
   }, [userDetails, selectedUserId]);
 
-  function showOnlinePeople(peopleArray) {
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedUserId) {
+        try {
+          const res = await axios.get(`/api/user/messages/${selectedUserId}`);
+          setMessages(res.data);
+        } catch (error) {
+          console.error("Error fetching messages:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [selectedUserId]);
+
+  useEffect(() => {
+    const handleRealTimeMessage = (event) => {
+      const messageData = JSON.parse(event.data);
+
+      if ("text" in messageData) {
+        setMessages((prev) => [...prev, { ...messageData }]);
+      }
+    };
+
+    // Add event listener for real-time messages
+    if (ws) {
+      ws.addEventListener("message", handleRealTimeMessage);
+    }
+
+    return () => {
+      // Remove the event listener when component unmounts
+      if (ws) {
+        ws.removeEventListener("message", handleRealTimeMessage);
+      }
+    };
+  }, [ws, selectedUserId]);
+
+  const showOnlinePeople = (peopleArray) => {
     const people = {};
     peopleArray.forEach(({ userId, username }) => {
       if (userId !== userDetails?._id) {
@@ -30,11 +72,10 @@ const ChatHome = () => {
     });
 
     setOnlinePeople(people);
-  }
+  };
 
-  function handleMessage(ev) {
+  const handleMessage = (ev) => {
     const messageData = JSON.parse(ev.data);
-    console.log({ ev, messageData });
     if ("online" in messageData) {
       showOnlinePeople(messageData.online);
     } else if ("text" in messageData) {
@@ -42,7 +83,7 @@ const ChatHome = () => {
         setMessages((prev) => [...prev, { ...messageData }]);
       }
     }
-  }
+  };
 
   const sendMessage = (ev) => {
     if (ev) ev.preventDefault();
@@ -67,7 +108,6 @@ const ChatHome = () => {
         try {
           const res = await axios.get(`/api/user/messages/${selectedUserId}`);
           setMessages(res.data);
-          // console.log(res.data);
         } catch (error) {
           console.error("Error fetching messages:", error);
         }
@@ -76,8 +116,7 @@ const ChatHome = () => {
 
     fetchData();
   }, [selectedUserId]);
-  
-  console.log(onlinePeople);
+
   return (
     <div className="flex min-h-screen">
       <Nav />

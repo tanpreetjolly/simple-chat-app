@@ -1,9 +1,17 @@
 // ChatMessages.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
   const [messagesNew, setMessagesNew] = useState([]);
-  console.log(messages);
+  const messagesContainerRef = useRef(null);
+
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messagesNew]);
+
   useEffect(() => {
     const uniqueMessageIds = new Set();
 
@@ -17,20 +25,18 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
 
     setMessagesNew(filteredMessages);
   }, [messages]);
-  console.log(messages);
+
   return (
-    <div className="absolute bottom- w-4/5 left-1/2 transform -translate-x-1/2">
+    <div className="absolute bottom-20 w-full px-14 left-1/2 transform -translate-x-1/2 overflow-auto h-[90vh]" ref={messagesContainerRef}>
       {!!selectedUserId && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 ">
           {messagesNew.map((message) => (
             <div
               key={message._id}
               className={`${
-                message.sender === userDetails._id
-                  ? "bg-blue-500 text-white self-end"
-                  : message.sender === selectedUserId
-                  ? "bg-gray-100 text-gray-900 self-start"
-                  : ""
+                message.sender !== userDetails._id
+                  ? "bg-white text-black self-start"
+                  : "bg-blue-500 text-white self-end"
               } p-2.5 rounded-lg`}
             >
               {message.text}
