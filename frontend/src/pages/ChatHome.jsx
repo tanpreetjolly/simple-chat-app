@@ -10,6 +10,7 @@ import OnlineUsersList from "../components/Chat/OnlineUserList";
 const ChatHome = () => {
   const [ws, setWs] = useState(null);
   const [onlinePeople, setOnlinePeople] = useState({});
+  const [offlinePeople, setOfflinePeople] = useState({});
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -63,6 +64,17 @@ const ChatHome = () => {
     };
   }, [ws, selectedUserId]);
 
+  const sendFile = (ev) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(ev.target.files[0]);
+    reader.onload = () => {
+      sendMessage(null, {
+        name: ev.target.files[0].name,
+        data: reader.result,
+      });
+    };
+  };
+
   const showOnlinePeople = (peopleArray) => {
     const people = {};
     peopleArray.forEach(({ userId, username }) => {
@@ -85,21 +97,29 @@ const ChatHome = () => {
     }
   };
 
-  const sendMessage = (ev) => {
+  const sendMessage = (ev, file = null) => {
     if (ev) ev.preventDefault();
     console.log("sending message");
     console.log(newMessage, selectedUserId);
-    ws.send(JSON.stringify({ text: newMessage, recipient: selectedUserId }));
-    setNewMessage("");
-    setMessages((prev) => [
-      ...prev,
-      {
-        text: newMessage,
-        sender: userDetails._id,
-        recipient: selectedUserId,
-        _id: Date.now(),
-      },
-    ]);
+    ws.send(
+      JSON.stringify({ text: newMessage, recipient: selectedUserId, file })
+    );
+    if (file) {
+      axios.get("/messages/" + selectedUserId).then((res) => {
+        setMessages(res.data);
+      });
+    } else {
+      setNewMessage("");
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: newMessage,
+          sender: userDetails._id,
+          recipient: selectedUserId,
+          _id: Date.now(),
+        },
+      ]);
+    }
   };
 
   useEffect(() => {
@@ -136,6 +156,7 @@ const ChatHome = () => {
             newMessage={newMessage}
             setNewMessage={setNewMessage}
             sendMessage={sendMessage}
+            sendFile={sendFile}
           />
         </div>
       </section>

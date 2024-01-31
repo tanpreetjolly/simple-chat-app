@@ -31,7 +31,8 @@ const createWebSocketServer = (server) => {
 
     connection.on("message", async (message) => {
       const messageData = JSON.parse(message.toString());
-      const { recipient, text } = messageData;
+      const { recipient, text, file } = messageData;
+      console.log(recipient, text, file);
       const msgDoc = await Message.create({
         sender: connection.userId,
         recipient,
