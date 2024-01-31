@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
   const [messagesNew, setMessagesNew] = useState([]);
   const messagesContainerRef = useRef(null);
-
+  // console.log(messages);
   useEffect(() => {
     const container = messagesContainerRef.current;
 
@@ -15,27 +15,30 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
         behavior: "smooth",
       });
     }
-  }, [messagesNew, messagesContainerRef]);
-  
-  useEffect(() => {
-    const uniqueMessageIds = new Set();
+  }, [messages, messagesContainerRef]);
 
-    const filteredMessages = messages.filter((message) => {
-      if (!uniqueMessageIds.has(message._id)) {
-        uniqueMessageIds.add(message._id);
-        return true;
-      }
-      return false;
-    });
+  // useEffect(() => {
+  //   const uniqueMessageIds = new Set();
 
-    setMessagesNew(filteredMessages);
-  }, [messages]);
+  //   const filteredMessages = messages.filter((message) => {
+  //     if (!uniqueMessageIds.has(message._id)) {
+  //       uniqueMessageIds.add(message._id);
+  //       return true;
+  //     }
+  //     return false;
+  //   });
+
+  //   setMessagesNew(filteredMessages);
+  // }, [messages]);
 
   return (
-    <div className="absolute bottom-20 w-full px-14 left-1/2 transform -translate-x-1/2 overflow-auto h-[90vh]" ref={messagesContainerRef}>
+    <div
+      className="absolute bottom-20 w-full px-14 left-1/2 transform -translate-x-1/2 overflow-auto h-[90vh]"
+      ref={messagesContainerRef}
+    >
       {!!selectedUserId && (
         <div className="flex flex-col gap-2 ">
-          {messagesNew.map((message) => (
+          {messages.map((message) => (
             <div
               key={message._id}
               className={`${
@@ -50,7 +53,7 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
         </div>
       )}
 
-      {!messagesNew.length && (
+      {!messages.length && (
         <div className="text-gray-500 text-center mt-4">
           No messages to display.
         </div>
