@@ -7,11 +7,16 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
 
   useEffect(() => {
     const container = messagesContainerRef.current;
-    if (container) {
-      container.scrollTop = container.scrollHeight;
-    }
-  }, [messagesNew]);
 
+    if (container) {
+      // Set the container scrollTop to the scrollHeight with smooth behavior
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messagesNew, messagesContainerRef]);
+  
   useEffect(() => {
     const uniqueMessageIds = new Set();
 
