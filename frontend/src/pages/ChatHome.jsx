@@ -16,15 +16,16 @@ const ChatHome = () => {
   const [newMessage, setNewMessage] = useState("");
   const { userDetails } = useProfile();
 
-  useEffect(() => {
+  const connectToWebSocket = () => {
     const ws = new WebSocket("ws://localhost:4000");
     ws.addEventListener("message", handleMessage);
     setWs(ws);
-
-    return () => {
-      // Close the WebSocket connection when component unmounts
-      ws.close();
-    };
+  };
+  useEffect(() => {
+    connectToWebSocket();
+    ws?.addEventListener("close", () => {
+      connectToWebSocket();
+    }
   }, [userDetails, selectedUserId]);
 
   useEffect(() => {

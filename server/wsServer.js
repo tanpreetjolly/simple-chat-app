@@ -2,11 +2,27 @@ const ws = require("ws");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const Message = require("./models/messageModel");
+const { clear } = require("console");
 
 const createWebSocketServer = (server) => {
   const wss = new ws.WebSocketServer({ server });
 
   wss.on("connection", (connection, req) => {
+    connection.isAlive = true;
+
+    connection.timer = setInterval(() => {
+      connection.ping();
+      connection.deathTimer = setTimeout(() => {
+        connection.isAlive = false;
+        connection.terminate();
+        console.log("Terminated");
+      }, 10000);
+    }, 5000);
+
+    connection.on("pong", () => {
+      clearTimeout(connection.deathTimer);
+    });
+
     const cookies = req.headers.cookie;
 
     if (cookies) {
@@ -24,7 +40,11 @@ const createWebSocketServer = (server) => {
           connection.username = `${firstName} ${lastName}`;
 
           // Log authenticated user information
-          console.log("User Connected:", connection.userId, connection.username);
+          console.log(
+            "User Connected:",
+            connection.userId,
+            connection.username
+          );
         });
       }
     }
