@@ -1,6 +1,7 @@
 // OnlineUsersList.js
 import React from "react";
 import Avatar from "./Avatar";
+import Contact from "./Contact"; // Import the new Contact component
 
 const OnlineUsersList = ({
   onlinePeople,
@@ -8,22 +9,34 @@ const OnlineUsersList = ({
   selectedUserId,
   setSelectedUserId,
 }) => {
+  console.log(offlinePeople);
+  console.log(onlinePeople)
   return (
     <section className="outline w-4/12 bg-blue-200">
       {Object.keys(onlinePeople).map((userId) => (
-        <li
+        <Contact
           key={userId}
-          className={`${
-            selectedUserId && "bg-teal-100"
-          } p-2.5 border-b border-gray-300 hover:bg-gray-100 flex items-center justify-center gap-2 hover:cursor-pointer`}
-          onClick={() => {
-            setSelectedUserId(userId);
-          }}
-        >
-          <Avatar userId={userId} username={onlinePeople[userId]} />
-          {onlinePeople[userId]}
-        </li>
+          userId={userId}
+          username={onlinePeople[userId]}
+          selectedUserId={selectedUserId}
+          setSelectedUserId={setSelectedUserId}
+          isOnline={true}
+        />
       ))}
+      {Object.keys(offlinePeople).map((userId) => {
+        const { _id, firstName, lastName } = offlinePeople[userId];
+
+        return (
+          <Contact
+            key={_id}
+            userId={_id}
+            username={`${firstName} ${lastName}`}
+            selectedUserId={selectedUserId}
+            setSelectedUserId={setSelectedUserId}
+            isOnline={false}
+          />
+        );
+      })}
     </section>
   );
 };

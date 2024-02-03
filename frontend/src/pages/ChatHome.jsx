@@ -8,21 +8,23 @@ import Nav from "../components/Chat/Nav";
 import OnlineUsersList from "../components/Chat/OnlineUserList";
 
 const ChatHome = () => {
-  const { userDetails } = useProfile();
   const [ws, setWs] = useState(null);
   const [onlinePeople, setOnlinePeople] = useState({});
   const [offlinePeople, setOfflinePeople] = useState({});
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const { userDetails } = useProfile();
 
-  console.log(offlinePeople);
-  
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
     ws.addEventListener("message", handleMessage);
     setWs(ws);
-    ws.addEventListener("close", () => console.log("WebSocket closed"));
+
+    return () => {
+      // Close the WebSocket connection when component unmounts
+      ws.close();
+    };
   }, [userDetails, selectedUserId]);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const ChatHome = () => {
 
     fetchData();
   }, [selectedUserId]);
-
+  
   useEffect(() => {
     axios.get("/api/user/people").then((res) => {
       const offlinePeopleArr = res.data
@@ -58,40 +60,31 @@ const ChatHome = () => {
     const handleRealTimeMessage = (event) => {
       const messageData = JSON.parse(event.data);
 
-      if ("text" in messageData && messageData.sender === selectedUserId) {
+      if ("text" in messageData) {
         setMessages((prev) => [...prev, { ...messageData }]);
       }
     };
 
+    // Add event listener for real-time messages
     if (ws) {
       ws.addEventListener("message", handleRealTimeMessage);
     }
 
     return () => {
+      // Remove the event listener when component unmounts
       if (ws) {
         ws.removeEventListener("message", handleRealTimeMessage);
       }
     };
   }, [ws, selectedUserId]);
 
-  const sendFile = (ev) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(ev.target.files[0]);
-    reader.onload = () => {
-      sendMessage(null, {
-        name: ev.target.files[0].name,
-        data: reader.result,
-      });
-    };
-  };
-
   const showOnlinePeople = (peopleArray) => {
-    const people = peopleArray.reduce((acc, { userId, username }) => {
+    const people = {};
+    peopleArray.forEach(({ userId, username }) => {
       if (userId !== userDetails?._id) {
-        acc[userId] = username;
+        people[userId] = username;
       }
-      return acc;
-    }, {});
+    });
 
     setOnlinePeople(people);
   };
@@ -100,32 +93,44 @@ const ChatHome = () => {
     const messageData = JSON.parse(ev.data);
     if ("online" in messageData) {
       showOnlinePeople(messageData.online);
+    } else if ("text" in messageData) {
+      if (messageData.sender === selectedUserId) {
+        setMessages((prev) => [...prev, { ...messageData }]);
+      }
     }
   };
 
-  const sendMessage = (ev, file = null) => {
+  const sendMessage = (ev) => {
     if (ev) ev.preventDefault();
-    ws.send(
-      JSON.stringify({ text: newMessage, recipient: selectedUserId, file })
-    );
-
-    if (file) {
-      axios.get("/messages/" + selectedUserId).then((res) => {
-        setMessages(res.data);
-      });
-    } else {
-      setNewMessage("");
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: newMessage,
-          sender: userDetails._id,
-          recipient: selectedUserId,
-          _id: Date.now(),
-        },
-      ]);
-    }
+    console.log("sending message");
+    console.log(newMessage, selectedUserId);
+    ws.send(JSON.stringify({ text: newMessage, recipient: selectedUserId }));
+    setNewMessage("");
+    setMessages((prev) => [
+      ...prev,
+      {
+        text: newMessage,
+        sender: userDetails._id,
+        recipient: selectedUserId,
+        _id: Date.now(),
+      },
+    ]);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedUserId) {
+        try {
+          const res = await axios.get(`/api/user/messages/${selectedUserId}`);
+          setMessages(res.data);
+        } catch (error) {
+          console.error("Error fetching messages:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [selectedUserId]);
 
   return (
     <div className="flex min-h-screen">
@@ -147,7 +152,6 @@ const ChatHome = () => {
             newMessage={newMessage}
             setNewMessage={setNewMessage}
             sendMessage={sendMessage}
-            sendFile={sendFile}
           />
         </div>
       </section>

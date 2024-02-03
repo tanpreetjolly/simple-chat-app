@@ -33,7 +33,7 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
 
   return (
     <div
-      className="absolute bottom-20 w-full px-14 left-1/2 transform -translate-x-1/2 overflow-auto h-[90vh]"
+      className="absolute bottom-20 w-full px-16 left-1/2 transform -translate-x-1/2 overflow-auto h-[90vh] pt-4"
       ref={messagesContainerRef}
     >
       {!!selectedUserId && (
