@@ -8,15 +8,32 @@ const createWebSocketServer = (server) => {
   const wss = new ws.WebSocketServer({ server });
 
   wss.on("connection", (connection, req) => {
+    const notifyAboutOnlinePeople = () => {
+      const onlineUsers = Array.from(wss.clients).map((client) => ({
+        userId: client.userId,
+        username: client.username,
+      }));
+
+      [...wss.clients].forEach((client) => {
+        client.send(
+          JSON.stringify({
+            online: onlineUsers,
+          })
+        );
+      });
+    };
+
     connection.isAlive = true;
 
     connection.timer = setInterval(() => {
       connection.ping();
       connection.deathTimer = setTimeout(() => {
         connection.isAlive = false;
+        clearInterval(connection.timer);
         connection.terminate();
-        console.log("Terminated");
-      }, 10000);
+        notifyAboutOnlinePeople();
+        console.log("dead");
+      }, 1000);
     }, 5000);
 
     connection.on("pong", () => {
@@ -73,20 +90,8 @@ const createWebSocketServer = (server) => {
         });
       }
     });
-
+    notifyAboutOnlinePeople();
     // Sending online user list to all clients
-    const onlineUsers = Array.from(wss.clients).map((client) => ({
-      userId: client.userId,
-      username: client.username,
-    }));
-
-    [...wss.clients].forEach((client) => {
-      client.send(
-        JSON.stringify({
-          online: onlineUsers,
-        })
-      );
-    });
 
     // Log online users to the console
     // console.log("Online Users:", onlineUsers);
