@@ -25,7 +25,7 @@ const ChatHome = () => {
     connectToWebSocket();
     ws?.addEventListener("close", () => {
       connectToWebSocket();
-    }
+    });
   }, [userDetails, selectedUserId]);
 
   useEffect(() => {
