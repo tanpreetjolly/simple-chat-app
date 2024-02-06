@@ -134,7 +134,7 @@ const ChatHome = () => {
   }, [selectedUserId]);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen  bg-background ">
       <Nav />
       <OnlineUsersList
         onlinePeople={onlinePeople}
@@ -142,13 +142,13 @@ const ChatHome = () => {
         setSelectedUserId={setSelectedUserId}
         offlinePeople={offlinePeople}
       />
-      <section className="outline w-7/12 bg-blue-400 relative pb-10">
+      <section className="w-[62%] relative pb-10">
         <ChatMessages
           messages={messages}
           userDetails={userDetails}
           selectedUserId={selectedUserId}
         />
-        <div className="absolute w-full bottom-0 outline flex justify-center items-center">
+        <div className="absolute w-full bottom-0 flex justify-center items-center">
           <MessageInputForm
             newMessage={newMessage}
             setNewMessage={setNewMessage}

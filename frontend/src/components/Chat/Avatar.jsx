@@ -1,15 +1,16 @@
+import "./Avatar.css";
 export default function Avatar({ username, userId, isOnline }) {
   const colors = [
-    "bg-teal-200",
-    "bg-red-200",
-    "bg-violet-200",
-    "bg-purple-200",
-    "bg-indigo-200",
-    "bg-yellow-200",
-    "bg-orange-200",
-    "bg-pink-200",
-    "bg-fuchsia-200",
-    "bg-rose-200",
+    "teal",
+    "red",
+    "violet",
+    "purple",
+    "bg-indigo",
+    "orange",
+    "pink",
+    "green",
+    "yellow",
+    "blue",
   ];
 
   // console.log(username)
@@ -17,9 +18,62 @@ export default function Avatar({ username, userId, isOnline }) {
   const colorIndex = userIdBase10 % colors.length;
   const color = colors[colorIndex];
   return (
-    <div className={"w-8 h-8 relative rounded-full flex items-center " + color}>
-      <div className="text-center w-full opacity-70">{username[0]}</div>
-      <div className={`absolute h-2 aspect-square rounded-full right-0 bottom-1 ${isOnline && "bg-green-500" }`}></div>
+    <div className={`squircle relative text-black`}>
+      <div className="squircle__inline">{username[0]}</div>
+      <div
+        className={`absolute h-2 aspect-square rounded-full right-0 bottom-1 z-20 ${
+          isOnline && "bg-green-500"
+        }`}
+      ></div>
+      <style>
+        {`
+        .squircle {
+          --squircle-fg: var(--bg, #ffffff);
+          --squircle-size: 40px;
+          --squircle-radii: 50% / 10%;
+        
+          aspect-ratio: 1;
+          display: grid;
+          grid-template-columns: 1fr;
+          max-width: 80%;
+        
+          width: var(--squircle-size);
+        }
+        
+        .squircle::before,
+        .squircle::after {
+          align-self: center;
+          background-color: ${color}; 
+          content: "";
+          grid-column: 1;
+          grid-row: 1;
+          justify-self: center;
+        }
+        
+        .squircle::before,
+        .squircle::after {
+          border-radius: var(--squircle-radii);
+          height: 115%;
+          width: 100%;
+        }
+        
+        .squircle::after {
+          transform: rotate(90deg);
+        }
+        
+        .squircle__inline {
+          border-radius: 7%;
+          display: grid;
+          inset-block: 5%;
+          inset-inline: 5%;
+          place-content: center;
+          position: absolute;
+          z-index: 1;
+        }
+        
+        
+        `}
+      </style>
     </div>
   );
 }

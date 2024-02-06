@@ -17,23 +17,9 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
     }
   }, [messages, messagesContainerRef]);
 
-  // useEffect(() => {
-  //   const uniqueMessageIds = new Set();
-
-  //   const filteredMessages = messages.filter((message) => {
-  //     if (!uniqueMessageIds.has(message._id)) {
-  //       uniqueMessageIds.add(message._id);
-  //       return true;
-  //     }
-  //     return false;
-  //   });
-
-  //   setMessagesNew(filteredMessages);
-  // }, [messages]);
-
   return (
     <div
-      className="absolute bottom-20 w-full px-16 left-1/2 transform -translate-x-1/2 overflow-auto max-h-[90vh] pt-4"
+      className="absolute bottom-24 w-full px-20 left-1/2 transform -translate-x-1/2 overflow-auto max-h-[90vh] pt-4"
       ref={messagesContainerRef}
     >
       {!!selectedUserId && (
@@ -41,13 +27,25 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
           {messages.map((message) => (
             <div
               key={message._id}
-              className={`${
+              className={`text-white ${
                 message.sender !== userDetails._id
-                  ? "bg-white text-black self-start"
-                  : "bg-blue-500 text-white self-end"
-              } p-2.5 rounded-lg`}
+                  ? "bg-primary  self-start  rounded-r-2xl "
+                  : "bg-primarySecond self-end  rounded-l-2xl "
+              } relative group  rounded-b-2xl px-5 py-3 `}
             >
-              {message.text}
+              <div
+                style={{ wordWrap: "breakWord" }}
+                className="flex flex-wrap max-w-[500px] overflow-auto"
+              >
+                {message.text}
+              </div>
+              <div
+                className={`absolute top-0  w-0 h-0  ${
+                  message.sender !== userDetails._id
+                    ? "border-r-primary -left-4 border-r-[20px]"
+                    : "rounded-l-lg -right-4 border-l-primarySecond border-l-[20px]"
+                } border-b-[20px] border-b-transparent `}
+              ></div>
             </div>
           ))}
         </div>

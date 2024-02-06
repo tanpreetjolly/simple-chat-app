@@ -1,7 +1,6 @@
-// OnlineUsersList.js
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "./Avatar";
-import Contact from "./Contact"; // Import the new Contact component
+import Contact from "./Contact";
 
 const OnlineUsersList = ({
   onlinePeople,
@@ -9,11 +8,29 @@ const OnlineUsersList = ({
   selectedUserId,
   setSelectedUserId,
 }) => {
-  console.log(offlinePeople);
-  console.log(onlinePeople)
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredOnlinePeople = Object.keys(onlinePeople).filter((userId) =>
+    onlinePeople[userId].toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredOfflinePeople = Object.keys(offlinePeople).filter((userId) => {
+    const { firstName, lastName } = offlinePeople[userId];
+    const fullName = `${firstName} ${lastName}`;
+    return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   return (
-    <section className="outline w-4/12 bg-blue-200">
-      {Object.keys(onlinePeople).map((userId) => (
+    <section className="w-[30%] m-3">
+      <div className="text-black">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      {filteredOnlinePeople.map((userId) => (
         <Contact
           key={userId}
           userId={userId}
@@ -23,7 +40,7 @@ const OnlineUsersList = ({
           isOnline={true}
         />
       ))}
-      {Object.keys(offlinePeople).map((userId) => {
+      {filteredOfflinePeople.map((userId) => {
         const { _id, firstName, lastName } = offlinePeople[userId];
 
         return (

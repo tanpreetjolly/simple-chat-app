@@ -12,16 +12,12 @@ const Contact = ({
   return (
     <li
       key={userId}
-      className={`${
-        selectedUserId === userId ? "bg-teal-100" : ""
-      } ${
-        !isOnline ? "opacity-60" : ""
-      } p-2.5 border-b border-gray-300 hover:bg-gray-100 flex items-center gap-2 hover:cursor-pointer`}
+      className={`${selectedUserId === userId ? "bg-primary" : ""} p-3  rounded-[1.3rem]  border-gray-300 hover:bg-primary flex items-center gap-4 font-medium hover:cursor-pointer my-3 text-white `}
       onClick={() => {
         setSelectedUserId(userId);
       }}
     >
-      <Avatar userId={userId} username={username} isOnline={isOnline}/>
+      <Avatar userId={userId} username={username} isOnline={isOnline} />
       {username}
     </li>
   );
