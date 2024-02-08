@@ -153,6 +153,7 @@ const ChatHome = () => {
             newMessage={newMessage}
             setNewMessage={setNewMessage}
             sendMessage={sendMessage}
+            selectedUserId={selectedUserId}
           />
         </div>
       </section>
