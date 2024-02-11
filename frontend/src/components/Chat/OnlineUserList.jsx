@@ -21,8 +21,8 @@ const OnlineUsersList = ({
   });
 
   return (
-    <section className="w-[30%] m-3">
-      <div className="text-white flex items-center gap-2 p-3 bg-primary w-[90%] mx-auto rounded-2xl">
+    <section className="w-[29%] m-3 border-r px-2 border-gray-700 pr-4">
+      <div className="text-white flex items-center gap-2 p-3 mt-1 mb-6 bg-primary w-[90%] mx-auto rounded-2xl">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
