@@ -18,18 +18,9 @@ app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4000",
-  "https://swift-chat-app-z08h.onrender.com",
+  // "https://swift-chat-app-z08h.onrender.com",
 ];
 
-app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
-
-app.get('/*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../frontend/dist/index.html'), (err) => {
-		if (err) {
-			console.error('Error sending file:', err);
-		}
-	});
-});
 
 const corsOptions = {
 	origin: (origin, callback) => {
@@ -45,7 +36,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions)); //for dev
 // app.use(cors());	//for production
-
 app.use("/api/user", userRoute);
 console.log(process.env.SMTP_USER);
 console.log(process.env.SMTP_PASS);
