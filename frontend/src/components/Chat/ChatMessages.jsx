@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
-  const [messagesNew, setMessagesNew] = useState([]);
+
   const messagesContainerRef = useRef(null);
   // console.log(messages);
   useEffect(() => {
@@ -19,11 +19,11 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
 
   return (
     <div
-      className="absolute bottom-24 w-full px-20 left-1/2 transform -translate-x-1/2 overflow-auto max-h-[90vh] pt-4"
+      className="absolute bottom-24 w-full px-20 left-1/2 transform -translate-x-1/2 overflow-auto max-h-[90vh] pt-20"
       ref={messagesContainerRef}
     >
       {!!selectedUserId && (
-        <div className="flex flex-col gap-2 ">
+        <div className="flex flex-col gap-2">
           {messages.map((message) => (
             <div
               key={message._id}
