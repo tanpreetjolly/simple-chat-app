@@ -6,6 +6,8 @@ const connection = require("./db/db.js");
 const userRoute = require("./routes/userRoute.js");
 const cookieParser = require('cookie-parser')
 const createWebSocketServer = require("./wsServer.js");
+const path = require("path");
+
 //database connection
 connection();
 app.use(express.json())
