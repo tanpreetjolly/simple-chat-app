@@ -16,8 +16,9 @@ app.use(cookieParser())
 //middlewares
 app.use(express.json());
 const allowedOrigins = [
-	"http://localhost:5173",
-	"http://localhost:4000",
+  "http://localhost:5173",
+  "http://localhost:4000",
+  "https://swift-chat-app-z08h.onrender.com",
 ];
 
 app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
