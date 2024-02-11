@@ -10,19 +10,19 @@ const MessageInputForm = ({
   return (
     <>
       {!!selectedUserId && (
-        <form onSubmit={sendMessage} className="relative  m-4 w-[85%]">
+        <form onSubmit={sendMessage} className="relative  m-4 w-[85%] border-t border-gray-500 pt-1.5 flex items-center">
           <input
             type="search"
             id="search-dropdown"
-            className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg outline-none rounded-s-gray-100 rounded-s-2 border border-gray-300"
-            placeholder="Search"
+            className="w-full px-4 py-3 rounded-xl bg-transparent outline-none text-white "
+            placeholder="Your Message"
             value={newMessage}
             onChange={(ev) => setNewMessage(ev.target.value)}
             required
           />
           <button
             type="submit"
-            className="absolute top-0 end-0 px-1.5 h-full font-medium text-white bg-blue-700 rounded-e-lg "
+            className="absolute  end-0 aspect-square h-10 font-medium text-white  rounded-e-lg "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
