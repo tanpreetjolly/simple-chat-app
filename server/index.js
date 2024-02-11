@@ -18,6 +18,16 @@ const allowedOrigins = [
 	"http://localhost:4000",
 ];
 
+app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
+
+app.get('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../frontend/dist/index.html'), (err) => {
+		if (err) {
+			console.error('Error sending file:', err);
+		}
+	});
+});
+
 const corsOptions = {
 	origin: (origin, callback) => {
 		if (allowedOrigins.includes(origin) || !origin) {
