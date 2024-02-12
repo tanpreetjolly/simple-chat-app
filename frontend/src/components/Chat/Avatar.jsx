@@ -25,7 +25,7 @@ export default function Avatar({ username, userId, isOnline }) {
 
   return (
     <div className={`squircle relative text-black`} style={squircleStyles}>
-      <div className="squircle__inline text-xl text-white  uppercase">
+      <div className="squircle__inline text-xl text-white  uppercase " style={{textShadow: "0.4px 0.4px 1px gray"}}>
         {username[0]}
       </div>
       <div
