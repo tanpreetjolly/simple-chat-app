@@ -6,6 +6,7 @@ import ChatMessages from "../components/Chat/ChatMessages";
 import MessageInputForm from "../components/Chat/MessageInputForm";
 import Nav from "../components/Chat/Nav";
 import OnlineUsersList from "../components/Chat/OnlineUserList";
+import TopBar from "../components/Chat/TopBar";
 
 const ChatHome = () => {
   const [ws, setWs] = useState(null);
@@ -42,10 +43,10 @@ const ChatHome = () => {
 
     fetchData();
   }, [selectedUserId]);
-  
+
   useEffect(() => {
     axios.get("/api/user/people").then((res) => {
-      const offlinePeopleArr = res.data
+      const offlinePeopleArr = res?.data
         .filter((p) => p._id !== userDetails?._id)
         .filter((p) => !onlinePeople[p._id]);
       setOfflinePeople(
@@ -144,41 +145,12 @@ const ChatHome = () => {
       />
       <section className="w-[62%] relative pb-10">
         {selectedUserId && (
-          <div className="absolute right-2 text-white w-full py-5  bg-transparent z-20 backdrop-blur-xl flex items-center px-5 gap-2 text-lg font-semibold border-b border-gray-700">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-              role="button"
-              onClick={e=>setSelectedUserId(null)}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-              />
-            </svg>
-            <span>
-              {
-                <>
-                  {onlinePeople[selectedUserId] ? (
-                    <>
-                      {onlinePeople[selectedUserId]}
-                      <span className="h-4 aspect-square bg-green-400"></span>
-                    </>
-                  ) : (
-                    <>
-                      {offlinePeople[selectedUserId].firstName}{" "}
-                      {offlinePeople[selectedUserId].lastName}(Offline)
-                    </>
-                  )}
-                </>
-              }
-            </span>
-          </div>
+          <TopBar
+            selectedUserId={selectedUserId}
+            setSelectedUserId={setSelectedUserId}
+            offlinePeople={offlinePeople}
+            onlinePeople={onlinePeople}
+          />
         )}
 
         <ChatMessages
