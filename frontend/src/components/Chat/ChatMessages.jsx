@@ -19,7 +19,7 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
 
   return (
     <div
-      className="absolute bottom-24 w-full px-20 left-1/2 transform -translate-x-1/2 overflow-auto max-h-[90vh] pt-20"
+      className="absolute bottom-24 w-full px-20 left-1/2 transform -translate-x-1/2 overflow-auto max-h-[90vh] pt-28 h-full"
       ref={messagesContainerRef}
     >
       {!!selectedUserId && (
@@ -51,9 +51,9 @@ const ChatMessages = ({ messages, userDetails, selectedUserId }) => {
         </div>
       )}
 
-      {!messages.length && (
-        <div className="text-gray-500 text-center mt-4">
-          No messages to display.
+      {selectedUserId && !messages.length && (
+        <div className="text-gray-500   flex items-end justify-center h-full ">
+          Start a conversation
         </div>
       )}
     </div>
