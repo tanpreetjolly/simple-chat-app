@@ -14,7 +14,7 @@ const Payments = () => {
           </p>
         </div>
         <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-          <div className="flex flex-col p-6 mx-auto max-w-lg text-center  rounded-lg border  shadow border-gray-700 xl:p-8 bg-gray-900 text-white">
+          <div className="flex flex-col p-6 mx-auto max-w-lg text-center  rounded-lg border  shadow border-gray-700 xl:p-8 bg-background text-white">
             <h3 className="mb-4 text-2xl font-semibold">Starter</h3>
             <p className="font-light  sm:text-lg text-gray-400">
               Best option for personal use & for your next project.
@@ -114,7 +114,7 @@ const Payments = () => {
               Get started
             </a>
           </div>
-          <div className="flex flex-col p-6 mx-auto max-w-lg text-center  rounded-lg border  shadow border-gray-700 xl:p-8 bg-gray-900 text-white">
+          <div className="flex flex-col p-6 mx-auto max-w-lg text-center  rounded-lg border  shadow border-gray-700 xl:p-8 bg-background text-white">
             <h3 className="mb-4 text-2xl font-semibold">Company</h3>
             <p className="font-light  sm:text-lg text-gray-400">
               Relevant for multiple users, extended & premium support.
@@ -215,7 +215,7 @@ const Payments = () => {
               Get started
             </a>
           </div>
-          <div className="flex flex-col p-6 mx-auto max-w-lg text-center  rounded-lg border  shadow border-gray-700 xl:p-8 bg-gray-900 text-white">
+          <div className="flex flex-col p-6 mx-auto max-w-lg text-center  rounded-lg border  shadow border-gray-700 xl:p-8 bg-background text-white">
             <h3 className="mb-4 text-2xl font-semibold">Enterprise</h3>
             <p className="font-light  sm:text-lg text-gray-400">
               Best for large scale uses and extended redistribution rights.
