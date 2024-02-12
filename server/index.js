@@ -18,7 +18,7 @@ app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4000",
-  // "https://swift-chat-app-z08h.onrender.com",
+  "https://swift-chat-app-z08h.onrender.com",
 ];
 
 
@@ -37,15 +37,6 @@ const corsOptions = {
 app.use(cors(corsOptions)); //for dev
 // app.use(cors());	//for production
 
-// app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
-
-// app.get('/*', (req, res) => {
-// 	res.sendFile(path.join(__dirname, '../frontend/dist/index.html'), (err) => {
-// 		if (err) {
-// 			console.error('Error sending file:', err);
-// 		}
-// 	});
-// });
 app.use("/api/user", userRoute);
 console.log(process.env.SMTP_USER);
 console.log(process.env.SMTP_PASS);
@@ -53,3 +44,12 @@ const port = process.env.PORT || 8000;
 const server = app.listen(port, () => console.log(`Application Running on Port ${port}`));
 
 createWebSocketServer(server); 
+app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
+
+app.get('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../frontend/dist/index.html'), (err) => {
+		if (err) {
+			console.error('Error sending file:', err);
+		}
+	});
+});
