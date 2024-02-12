@@ -1,26 +1,31 @@
+import React from "react";
 import "./Avatar.css";
+
 export default function Avatar({ username, userId, isOnline }) {
-  // const colors = [
-  //   "teal",
-  //   "red",
-  //   "violet",
-  //   "purple",
-  //   "bg-indigo",
-  //   "orange",
-  //   "pink",
-  //   "green",
-  //   "yellow",
-  //   "blue",
-  // ];
+  const colors = [
+    "#90CDF4",
+    "#F56565",
+    "#D6BCFA",
+    "#BC85E0",
+    "#7F9CF5",
+    "#F6AD55",
+    "#F687B3",
+    "#68D391",
+    "#FBBF24",
+    "#4299E1",
+  ];
 
+  const userIdBase10 = parseInt(userId.substring(10), 16);
+  const colorIndex = userIdBase10 % colors.length;
+  const color = colors[colorIndex];
 
-  // const userIdBase10 = parseInt(userId.substring(10), 16);
-  // const colorIndex = userIdBase10 % colors.length;
-  // const color = colors[colorIndex];
+  const squircleStyles = {
+    "--squircle-bg-color": color,
+  };
+
   return (
-    <div className={`squircle relative text-black`}>
-    
-      <div className="squircle__inline text-xl text-white bg-primarySecond">
+    <div className={`squircle relative text-black`} style={squircleStyles}>
+      <div className="squircle__inline text-xl text-white  uppercase">
         {username[0]}
       </div>
       <div
@@ -46,7 +51,7 @@ export default function Avatar({ username, userId, isOnline }) {
         .squircle::before,
         .squircle::after {
           align-self: center;
-          background-color: #6B8AFD; 
+          background-color: var(--squircle-bg-color, #6B8AFD); 
           content: "";
           grid-column: 1;
           grid-row: 1;
@@ -73,8 +78,6 @@ export default function Avatar({ username, userId, isOnline }) {
           position: absolute;
           z-index: 1;
         }
-        
-        
         `}
       </style>
     </div>
