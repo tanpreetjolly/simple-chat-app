@@ -15,6 +15,7 @@ import axios from "axios";
 import ChatHome from "./pages/ChatHome";
 import { ProfileProvider } from "./context/profileContext";
 import { useEffect } from "react";
+import Profile from "./components/Profile";
 
 const Layout = () => {
   const { isAuthenticated, checkAuth } = useAuth();
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "chathome",
         element: <ChatHome />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },
