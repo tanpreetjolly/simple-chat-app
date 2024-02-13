@@ -16,6 +16,7 @@ import ChatHome from "./pages/ChatHome";
 import { ProfileProvider } from "./context/profileContext";
 import { useEffect } from "react";
 import Profile from "./components/Profile";
+import { baseUrl } from "../apiConfig";
 
 const Layout = () => {
   const { isAuthenticated, checkAuth } = useAuth();
@@ -67,7 +68,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  axios.defaults.baseURL = "http://localhost:4000";
+  axios.defaults.baseURL = baseUrl;
   axios.defaults.withCredentials = true;
 
   return (
