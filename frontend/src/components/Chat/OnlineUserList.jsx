@@ -46,6 +46,7 @@ const OnlineUsersList = ({
           className="w-full bg-transparent outline-none"
         />
       </div>
+      <div className="max-h-[85vh] overflow-auto no-scrollbar">
       {filteredOnlinePeople.map((userId) => (
         <Contact
           key={userId}
@@ -70,6 +71,7 @@ const OnlineUsersList = ({
           />
         );
       })}
+      </div>
     </section>
   );
 };
