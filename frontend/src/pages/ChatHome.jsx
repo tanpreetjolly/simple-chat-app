@@ -47,17 +47,25 @@ const ChatHome = () => {
 
   useEffect(() => {
     axios.get("/api/user/people").then((res) => {
-      const offlinePeopleArr = res?.data
-        .filter((p) => p._id !== userDetails?._id)
-        .filter((p) => !onlinePeople[p._id]);
-      setOfflinePeople(
-        offlinePeopleArr.reduce((acc, p) => {
-          acc[p._id] = p;
-          return acc;
-        }, {})
-      );
+        // console.log(res.data);
+        const offlinePeopleArr = res?.data
+            .filter((p) => p._id !== userDetails?._id)
+            .filter((p) => !onlinePeople[p._id]);
+
+        const offlinePeopleWithAvatar = offlinePeopleArr.map((p) => ({
+            ...p,
+            avatarLink: p.avatarLink,  // assuming avatarLink is a property of p
+        }));
+
+        setOfflinePeople(
+            offlinePeopleWithAvatar.reduce((acc, p) => {
+                acc[p._id] = p;
+                return acc;
+            }, {})
+        );
     });
-  }, [onlinePeople, userDetails]);
+}, [onlinePeople, userDetails]);
+
 
   useEffect(() => {
     const handleRealTimeMessage = (event) => {
@@ -82,6 +90,7 @@ const ChatHome = () => {
   }, [ws, selectedUserId]);
 
   const showOnlinePeople = (peopleArray) => {
+    // console.log(peopleArray);
     const people = {};
     peopleArray.forEach(({ userId, username }) => {
       if (userId !== userDetails?._id) {

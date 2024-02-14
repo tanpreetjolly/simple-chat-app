@@ -9,7 +9,6 @@ const OnlineUsersList = ({
   setSelectedUserId,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-
   const filteredOnlinePeople = Object.keys(onlinePeople).filter((userId) =>
     onlinePeople[userId].toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -19,7 +18,7 @@ const OnlineUsersList = ({
     const fullName = `${firstName} ${lastName}`;
     return fullName.toLowerCase().includes(searchTerm.toLowerCase());
   });
-
+  console.log(offlinePeople);
   return (
     <section className="w-[29%] py-3 border-r px-4 border-gray-700 pr-4">
       <div className="text-white flex items-center gap-2 p-3 mt-1 mb-6 bg-primary w-[90%] mx-auto rounded-2xl">
@@ -58,7 +57,7 @@ const OnlineUsersList = ({
         />
       ))}
       {filteredOfflinePeople.map((userId) => {
-        const { _id, firstName, lastName } = offlinePeople[userId];
+        const { _id, firstName, lastName, avatarLink } = offlinePeople[userId];
 
         return (
           <Contact
@@ -68,6 +67,7 @@ const OnlineUsersList = ({
             selectedUserId={selectedUserId}
             setSelectedUserId={setSelectedUserId}
             isOnline={false}
+            avatarLink={avatarLink}
           />
         );
       })}

@@ -1,7 +1,8 @@
 import React from "react";
 import "./Avatar.css";
 
-export default function Avatar({ username, userId, isOnline }) {
+export default function Avatar({ username, userId, isOnline, avatarLink }) {
+  console.log(avatarLink)
   const colors = [
     "#90CDF4",
     "#F56565",
@@ -25,8 +26,11 @@ export default function Avatar({ username, userId, isOnline }) {
 
   return (
     <div className={`squircle relative text-black`} style={squircleStyles}>
-      <div className="squircle__inline text-xl text-white  uppercase " style={{textShadow: "0.4px 0.4px 1px gray"}}>
-        {username[0]}
+      <div
+        className="squircle__inline text-xl text-white  uppercase "
+        style={{ textShadow: "0.4px 0.4px 1px gray" }}
+      >
+         <img src={avatarLink} className="h-10 grid place-content-center" alt={username[0]} />
       </div>
       <div
         className={`absolute h-2 aspect-square rounded-full right-0 bottom-1 z-20 ${

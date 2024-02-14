@@ -8,6 +8,7 @@ const Contact = ({
   selectedUserId,
   setSelectedUserId,
   isOnline,
+  avatarLink,
 }) => {
   return (
     <li
@@ -17,7 +18,7 @@ const Contact = ({
         setSelectedUserId(userId);
       }}
     >
-      <Avatar userId={userId} username={username} isOnline={isOnline} />
+      <Avatar userId={userId} username={username} isOnline={isOnline} avatarLink={avatarLink}/>
       {username}
     </li>
   );
