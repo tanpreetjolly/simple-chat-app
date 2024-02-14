@@ -1,19 +1,24 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const { User } = require("../models/userModel");
 
 const profileController = async (req, res) => {
   const token = req.cookies?.authToken;
-  console.log(token);
+  // console.log(token);
   if (token) {
-    jwt.verify(token, process.env.JWTPRIVATEKEY, {}, (err, userData) => {
+    jwt.verify(token, process.env.JWTPRIVATEKEY, {}, async (err, userData) => {
       console.log(userData);
       if (err) throw err;
-      res.json(userData);
+      // res.json(userData);
+      // console.log(userData);
+      const user = await User.findOne({ _id: userData._id });
+      user.password = undefined;
+      res.json(user);
     });
   } else {
     res.status(401).json("no token");
   }
 };
+
 const profileUpdate = async (req, res) => {
   const token = req.cookies?.authToken;
   if (token) {
@@ -24,14 +29,15 @@ const profileUpdate = async (req, res) => {
     res.status(401).json("no token");
   }
 
-  const { firstName, lastName, email } = req.body;
+  const { firstName, lastName, email, avatarLink } = req.body;
   const user = await User.findOne({ email });
 
   if (user) {
     user.firstName = firstName;
     user.lastName = lastName;
     user.email = email;
-    user.save();
+    user.avatarLink = avatarLink;
+    await user.save();
   }
   res.json(user);
 };
