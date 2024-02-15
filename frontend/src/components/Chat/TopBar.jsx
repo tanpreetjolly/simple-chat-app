@@ -28,7 +28,7 @@ const TopBar = ({
         <>
           {onlinePeople[selectedUserId] ? (
             <>
-              {onlinePeople[selectedUserId]}
+              {onlinePeople[selectedUserId].username}
               <span className="h-3 rounded-full aspect-square bg-green-400"></span>
             </>
           ) : (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const SelectAvatar = ({ setSelectedLink, selectedLink }) => {
-  console.log(selectedLink)
+  // console.log(selectedLink)
   const [avatars, setAvatars] = useState([]);
   useEffect(() => {
     const fetchAvatars = async () => {

@@ -3,16 +3,27 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const Message = require("./models/messageModel");
 const { clear } = require("console");
+const { User } = require("./models/userModel");
 
 const createWebSocketServer = (server) => {
   const wss = new ws.WebSocketServer({ server });
 
   wss.on("connection", (connection, req) => {
-    const notifyAboutOnlinePeople = () => {
-      const onlineUsers = Array.from(wss.clients).map((client) => ({
-        userId: client.userId,
-        username: client.username,
-      }));
+    const notifyAboutOnlinePeople = async () => {
+      const onlineUsers = await Promise.all(
+        Array.from(wss.clients).map(async (client) => {
+          const { userId, username } = client;
+          // Assuming you have a User model and it has an avatarLink field
+          const user = await User.findById(userId);
+          const avatarLink = user ? user.avatarLink : null;
+
+          return {
+            userId,
+            username,
+            avatarLink,
+          };
+        })
+      );
 
       [...wss.clients].forEach((client) => {
         client.send(
@@ -57,11 +68,11 @@ const createWebSocketServer = (server) => {
           connection.username = `${firstName} ${lastName}`;
 
           // Log authenticated user information
-          console.log(
-            "User Connected:",
-            connection.userId,
-            connection.username
-          );
+          // console.log(
+          //   "User Connected:",
+          //   connection.userId,
+          //   connection.username
+          // );
         });
       }
     }

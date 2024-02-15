@@ -90,16 +90,19 @@ const ChatHome = () => {
   }, [ws, selectedUserId]);
 
   const showOnlinePeople = (peopleArray) => {
-    // console.log(peopleArray);
     const people = {};
-    peopleArray.forEach(({ userId, username }) => {
+    peopleArray.forEach(({ userId, username, avatarLink }) => {
       if (userId !== userDetails?._id) {
-        people[userId] = username;
+        people[userId] = {
+          username,
+          avatarLink, // include avatarLink for online users
+        };
       }
     });
-
+  
     setOnlinePeople(people);
   };
+  
 
   const handleMessage = (ev) => {
     const messageData = JSON.parse(ev.data);

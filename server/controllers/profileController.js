@@ -11,7 +11,7 @@ const profileController = async (req, res) => {
       // res.json(userData);
       // console.log(userData);
       const user = await User.findOne({ _id: userData._id });
-      user.password = undefined;
+      user.password = "";
       res.json(user);
     });
   } else {

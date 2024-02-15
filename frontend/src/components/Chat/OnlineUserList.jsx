@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Avatar from "./Avatar";
 import Contact from "./Contact";
 
+// ... (imports)
+
 const OnlineUsersList = ({
   onlinePeople,
   offlinePeople,
@@ -9,16 +11,18 @@ const OnlineUsersList = ({
   setSelectedUserId,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredOnlinePeople = Object.keys(onlinePeople).filter((userId) =>
-    onlinePeople[userId].toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+  const filteredOnlinePeople = Object.keys(onlinePeople).filter((userId) => {
+    const username = onlinePeople[userId].username || "";
+    return username.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const filteredOfflinePeople = Object.keys(offlinePeople).filter((userId) => {
     const { firstName, lastName } = offlinePeople[userId];
     const fullName = `${firstName} ${lastName}`;
     return fullName.toLowerCase().includes(searchTerm.toLowerCase());
   });
-  console.log(offlinePeople);
+
   return (
     <section className="w-[29%] py-3 border-r px-4 border-gray-700 pr-4">
       <div className="text-white flex items-center gap-2 p-3 mt-1 mb-6 bg-primary w-[90%] mx-auto rounded-2xl">
@@ -46,34 +50,40 @@ const OnlineUsersList = ({
         />
       </div>
       <div className="max-h-[85vh] overflow-auto no-scrollbar">
-      {filteredOnlinePeople.map((userId) => (
-        <Contact
-          key={userId}
-          userId={userId}
-          username={onlinePeople[userId]}
-          selectedUserId={selectedUserId}
-          setSelectedUserId={setSelectedUserId}
-          isOnline={true}
-        />
-      ))}
-      {filteredOfflinePeople.map((userId) => {
-        const { _id, firstName, lastName, avatarLink } = offlinePeople[userId];
-
-        return (
-          <Contact
-            key={_id}
-            userId={_id}
-            username={`${firstName} ${lastName}`}
-            selectedUserId={selectedUserId}
-            setSelectedUserId={setSelectedUserId}
-            isOnline={false}
-            avatarLink={avatarLink}
-          />
-        );
-      })}
+        {filteredOnlinePeople.map((userId) => {
+          const { username, avatarLink } = onlinePeople[userId];
+          console.log(userId)
+          return (
+            <Contact
+              key={userId}
+              userId={userId}
+              username={username}
+              selectedUserId={selectedUserId}
+              setSelectedUserId={setSelectedUserId}
+              isOnline={true}
+              avatarLink={avatarLink} // Include avatarLink for online users
+            />
+          );
+        })}
+        {filteredOfflinePeople.map((userId) => {
+          const { _id, firstName, lastName, avatarLink } =
+            offlinePeople[userId];
+          return (
+            <Contact
+              key={_id}
+              userId={_id}
+              username={`${firstName} ${lastName}`}
+              selectedUserId={selectedUserId}
+              setSelectedUserId={setSelectedUserId}
+              isOnline={false}
+              avatarLink={avatarLink}
+            />
+          );
+        })}
       </div>
     </section>
   );
 };
+
 
 export default OnlineUsersList;

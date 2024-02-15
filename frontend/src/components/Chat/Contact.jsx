@@ -16,6 +16,7 @@ const Contact = ({
       className={`${selectedUserId === userId ? "bg-primary" : ""} capitalize py-3 px-5  rounded-[1.3rem]  border-gray-300 hover:bg-primary flex items-center gap-4 font-medium hover:cursor-pointer my-3 text-white `}
       onClick={() => {
         setSelectedUserId(userId);
+        console.log(userId);
       }}
     >
       <Avatar userId={userId} username={username} isOnline={isOnline} avatarLink={avatarLink}/>
