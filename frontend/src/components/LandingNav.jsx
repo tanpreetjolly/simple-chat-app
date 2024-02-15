@@ -8,13 +8,12 @@ const LandingNav = () => {
     <nav className="">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-6 ">
         <a
-          href="https://flowbite.com/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <img
             src="https://flowbite.com/docs/images/logo.svg"
             className="h-8"
-            alt="Flowbite Logo"
+            alt="Swift Logo"
           />
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
             Swift-Chat
@@ -37,9 +36,9 @@ const LandingNav = () => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M1 1h15M1 7h15M1 13h15"
             />
           </svg>
