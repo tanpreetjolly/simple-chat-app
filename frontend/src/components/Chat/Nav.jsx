@@ -1,7 +1,16 @@
 // Nav.js
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 const Nav = () => {
+  const { logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
   return (
     <header className="w-[9%] text-white bg-dark flex flex-col px-3 py-4">
       <Link
@@ -11,7 +20,7 @@ const Nav = () => {
         <img
           src="https://flowbite.com/docs/images/logo.svg"
           className="h-8"
-          alt="Flowbite Logo"
+          alt="Swift Logo"
         />
         <span className="font-semibold text-xl mr-2">Swift</span>
       </Link>
@@ -67,7 +76,7 @@ const Nav = () => {
               d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
             />
           </svg>
-          <span>Logout</span>
+          <button onClick={logout}>Logout</button>
         </Link>
       </nav>
     </header>
