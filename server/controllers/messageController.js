@@ -1,27 +1,9 @@
+const protect = require("../middleware/protect");
 const Message = require("../models/messageModel");
-const jwt = require("jsonwebtoken");
-
-async function getUserDataFromRequest(req) {
-  return new Promise((resolve, reject) => {
-    const token = req.cookies?.authToken;
-    if (token) {
-      jwt.verify(token, process.env.JWTPRIVATEKEY, {}, (err, userData) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(userData);
-        }
-      });
-    } else {
-      reject("no token");
-    }
-  });
-}
-
 
 const messageController = async (req, res) => {
   const { userId } = req.params;
-  const userData = await getUserDataFromRequest(req);
+  const userData = await protect(req);
   console.log("userData", userData);
 
   const ourUserId = userData._id;

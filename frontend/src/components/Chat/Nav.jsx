@@ -12,7 +12,7 @@ const Nav = () => {
     }
   }, [isAuthenticated]);
   return (
-    <header className="w-[9%] text-white bg-dark flex flex-col px-3 py-4">
+    <header className="hidden w-[9%] text-white bg-dark lg:flex flex-col px-3 py-4">
       <Link
         to="/"
         className="flex gap-2 items-center justify-center border-b pb-2 mb-4 border-gray-600"

@@ -8,6 +8,8 @@ import Nav from "../components/Chat/Nav";
 import OnlineUsersList from "../components/Chat/OnlineUserList";
 import TopBar from "../components/Chat/TopBar";
 import { socketUrl } from "../../apiConfig";
+import { useAuth } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const ChatHome = () => {
   const [ws, setWs] = useState(null);
@@ -17,7 +19,8 @@ const ChatHome = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const { userDetails } = useProfile();
-
+  const { isAuthenticated, checkAuth } = useAuth();
+  const navigate = useNavigate();
   const connectToWebSocket = () => {
     const ws = new WebSocket(socketUrl);
     ws.addEventListener("message", handleMessage);
@@ -47,25 +50,24 @@ const ChatHome = () => {
 
   useEffect(() => {
     axios.get("/api/user/people").then((res) => {
-        // console.log(res.data);
-        const offlinePeopleArr = res?.data
-            .filter((p) => p._id !== userDetails?._id)
-            .filter((p) => !onlinePeople[p._id]);
+      // console.log(res.data);
+      const offlinePeopleArr = res?.data
+        .filter((p) => p._id !== userDetails?._id)
+        .filter((p) => !onlinePeople[p._id]);
 
-        const offlinePeopleWithAvatar = offlinePeopleArr.map((p) => ({
-            ...p,
-            avatarLink: p.avatarLink,  // assuming avatarLink is a property of p
-        }));
+      const offlinePeopleWithAvatar = offlinePeopleArr.map((p) => ({
+        ...p,
+        avatarLink: p.avatarLink, // assuming avatarLink is a property of p
+      }));
 
-        setOfflinePeople(
-            offlinePeopleWithAvatar.reduce((acc, p) => {
-                acc[p._id] = p;
-                return acc;
-            }, {})
-        );
+      setOfflinePeople(
+        offlinePeopleWithAvatar.reduce((acc, p) => {
+          acc[p._id] = p;
+          return acc;
+        }, {})
+      );
     });
-}, [onlinePeople, userDetails]);
-
+  }, [onlinePeople, userDetails]);
 
   useEffect(() => {
     const handleRealTimeMessage = (event) => {
@@ -99,10 +101,9 @@ const ChatHome = () => {
         };
       }
     });
-  
+
     setOnlinePeople(people);
   };
-  
 
   const handleMessage = (ev) => {
     const messageData = JSON.parse(ev.data);
@@ -146,7 +147,12 @@ const ChatHome = () => {
 
     fetchData();
   }, [selectedUserId]);
-
+  useEffect(() => {
+    checkAuth();
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="flex min-h-screen  bg-background ">
       <Nav />

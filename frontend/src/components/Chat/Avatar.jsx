@@ -1,8 +1,4 @@
-import React from "react";
-import "./Avatar.css";
-
 export default function Avatar({ username, userId, isOnline, avatarLink }) {
-  console.log(avatarLink)
   const colors = [
     "#90CDF4",
     "#F56565",
@@ -30,7 +26,7 @@ export default function Avatar({ username, userId, isOnline, avatarLink }) {
         className="squircle__inline text-xl text-white  uppercase "
         style={{ textShadow: "0.4px 0.4px 1px gray" }}
       >
-        {avatarLink ? (
+        {username && avatarLink ? (
           <img
             src={avatarLink}
             className="h-10 grid place-content-center"
@@ -40,11 +36,7 @@ export default function Avatar({ username, userId, isOnline, avatarLink }) {
           <span>{username[0]}</span>
         )}
       </div>
-      <div
-        className={`absolute h-2 aspect-square rounded-full right-0 bottom-1 z-20 ${
-          isOnline && "bg-green-500"
-        }`}
-      ></div>
+      
       <style>
         {`
         .squircle {
