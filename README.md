@@ -2,6 +2,10 @@
 
 Welcome to the Chat App! This repository contains the code for both the client and server components of a simple chat application.
 
+## Flow of website
+
+![flow](https://i.imgur.com/trbch64.png)
+
 ## Getting Started
 
 Follow the instructions below to set up and run the Chat App locally on your machine.
