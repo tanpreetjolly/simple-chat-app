@@ -36,7 +36,7 @@ const Profile = () => {
   },[userDetails]);
 
   return (
-    <div className="flex h-full min-h-screen ">
+    <div className="flex h-full min-h-screen bg-background">
       <Nav />
       <div className="bg-background w-[91%] flex items-center">
         <div className="max-w-xl mx-auto ">

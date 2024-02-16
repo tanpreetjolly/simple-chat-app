@@ -162,7 +162,7 @@ const ChatHome = () => {
         setSelectedUserId={setSelectedUserId}
         offlinePeople={offlinePeople}
       />
-      <section className="w-[62%] relative pb-10">
+      <section className="w-[71%] lg:w-[62%] relative pb-10">
         {selectedUserId && (
           <TopBar
             selectedUserId={selectedUserId}
