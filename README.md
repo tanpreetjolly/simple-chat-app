@@ -48,7 +48,7 @@ Follow the instructions below to set up and run the Chat App locally on your mac
 1. Start the frontend (frontend):
 
     ```bash
-    cd ../client
+    cd frontend
     npm run dev
     ```
 
@@ -57,7 +57,7 @@ Follow the instructions below to set up and run the Chat App locally on your mac
 2. Start the server (backend):
 
     ```bash
-    cd ../server
+    cd server
     npm run start
     ```
 
