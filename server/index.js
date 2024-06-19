@@ -20,6 +20,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4000",
 	"https://swifty-chatty-appy.onrender.com",
+	"https://simple-chat-app-6yeb.onrender.com,
 	"https://swifty-chatty-appy.vercel.app",
 	"https://simple-chat-app-pearl.vercel.app"
 ];
